@@ -1,5 +1,8 @@
 const API_KEY = "30b99f74b7fc14df13379f47036ef238";
 
+// 🔹 URL de tu backend en Render
+const BASE_URL = "https://tu-backend-render.onrender.com"; // <-- cambia por tu URL real
+
 /* ---------------- Variables globales ---------------- */
 let map;
 let markers = [];
@@ -36,7 +39,7 @@ function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  fetch("http://localhost:3000/login", {
+  fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
@@ -59,7 +62,7 @@ function register() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  fetch("http://localhost:3000/register", {
+  fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
@@ -189,7 +192,7 @@ function guardarBusqueda() {
     wind_speed: ultimaBusqueda.velocidad_viento
   };
 
-  fetch("http://localhost:3000/search", {
+  fetch(`${BASE_URL}/search`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -215,7 +218,7 @@ function cargarPerfil() {
   const userId = localStorage.getItem("userId");
   if (!userId) return;
 
-  fetch(`http://localhost:3000/perfiles/${userId}`)
+  fetch(`${BASE_URL}/perfiles/${userId}`)
     .then(res => res.json())
     .then(data => {
       document.getElementById("fechaNacimiento").value = data.fecha_nacimiento || "";
@@ -227,7 +230,7 @@ function cargarPerfil() {
       if (data.ciudad || data.estado || data.pais) {
         deshabilitarEdicion();
       } else {
-        habilitarEdicion(); // para primer registro
+        habilitarEdicion();
       }
     });
 }
@@ -270,7 +273,6 @@ function habilitarEdicion() {
   }
 
   setTimeout(() => perfilMap.invalidateSize(), 200);
-
   document.getElementById("btnEditarPerfil").disabled = true;
 }
 
@@ -295,7 +297,7 @@ function guardarPerfil() {
   const pais = document.getElementById("paisPerfil").value;
   const bio = document.getElementById("bioPerfil").value;
 
-  fetch("http://localhost:3000/perfiles", {
+  fetch(`${BASE_URL}/perfiles`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, fecha_nacimiento, ciudad, estado, pais, bio })
@@ -324,32 +326,9 @@ function buscarCiudad(ciudadParam) {
     .catch(err => console.error(err));
 }
 
-
-/* ---------------- Historial ---------------- */
-function cargarBusquedas() {
-  const userId = localStorage.getItem("userId");
-  if (!userId) return;
-  fetch(`http://localhost:3000/historial/${userId}`)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.querySelector("#busquedasTable tbody");
-      tbody.innerHTML = "";
-      if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6">No hay búsquedas guardadas</td></tr>`;
-        return;
-      }
-      data.forEach(b => {
-        const fecha = new Date(b.fecha).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" });
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${b.ciudad}</td><td>${b.temperatura} °C</td><td>${b.descripcion}</td><td>${b.humedad}%</td><td>${b.velocidad_viento} m/s</td><td>${fecha}</td>`;
-        tbody.appendChild(tr);
-      });
-    });
-}
-/* ---------------- Historial ---------------- */
 function mostrarHistorial() {
   mostrarPantalla("historialBusquedas");
-  cargarBusquedas(); // 🔹 importante para que se muestren las búsquedas
+  cargarBusquedas();
 }
 
 function mostrarSugerenciasAPI() {
@@ -369,8 +348,6 @@ function mostrarSugerenciasAPI() {
         div.onclick = () => {
           document.getElementById("ciudadInput").value = `${lugar.name}, ${lugar.state || ""}`;
           sugerenciasList.innerHTML = "";
-
-          // Buscamos usando lat/lon exactos
           buscarCiudadPorCoordenadas(lugar.lat, lugar.lon);
         };
         sugerenciasList.appendChild(div);
@@ -391,6 +368,7 @@ function buscarCiudadPorCoordenadas(lat, lon) {
     })
     .catch(err => console.error(err));
 }
+
 function mostrarSugerenciasPerfil() {
   const input = document.getElementById("ciudadInputPerfil");
   const query = input.value.trim();
@@ -406,14 +384,12 @@ function mostrarSugerenciasPerfil() {
         const div = document.createElement("div");
         div.textContent = `${ciudad.name}, ${ciudad.state || ""}, ${ciudad.country}`;
         div.addEventListener("click", () => {
-          // Actualiza campos del perfil con coordenadas exactas
           document.getElementById("ciudadPerfil").value = ciudad.name;
           document.getElementById("estadoPerfil").value = ciudad.state || "";
           document.getElementById("paisPerfil").value = ciudad.country;
           document.getElementById("ciudadPerfil").dataset.lat = ciudad.lat;
           document.getElementById("ciudadPerfil").dataset.lon = ciudad.lon;
 
-          // Muestra marcador en mapa de perfil
           if (perfilMarker) perfilMap.removeLayer(perfilMarker);
           perfilMarker = L.marker([ciudad.lat, ciudad.lon]).addTo(perfilMap);
           perfilMap.setView([ciudad.lat, ciudad.lon], 8);
@@ -450,9 +426,5 @@ function buscarCiudadPerfil() {
     });
 }
 
-
-
-
-
 /* ---------------- Inicializar ---------------- */
-window.onload = actualizarEstadoLogin;
+window.onload = actualizarEstadoLogin; // 🔹 solo al renderizar la página
