@@ -1,7 +1,9 @@
 const API_KEY = "30b99f74b7fc14df13379f47036ef238";
 
-// 🔹 URL de tu backend en Render
-const BASE_URL = "https://tu-backend-render.onrender.com"; // <-- cambia por tu URL real
+/* ---------------- Base URL dinámica ---------------- */
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3000"                   // Local
+  : "https://clima-app-8ceu.onrender.com";   // Render
 
 /* ---------------- Variables globales ---------------- */
 let map;
@@ -230,7 +232,7 @@ function cargarPerfil() {
       if (data.ciudad || data.estado || data.pais) {
         deshabilitarEdicion();
       } else {
-        habilitarEdicion();
+        habilitarEdicion(); // para primer registro
       }
     });
 }
@@ -273,6 +275,7 @@ function habilitarEdicion() {
   }
 
   setTimeout(() => perfilMap.invalidateSize(), 200);
+
   document.getElementById("btnEditarPerfil").disabled = true;
 }
 
@@ -324,6 +327,28 @@ function buscarCiudad(ciudadParam) {
       }
     })
     .catch(err => console.error(err));
+}
+
+/* ---------------- Historial ---------------- */
+function cargarBusquedas() {
+  const userId = localStorage.getItem("userId");
+  if (!userId) return;
+  fetch(`${BASE_URL}/historial/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector("#busquedasTable tbody");
+      tbody.innerHTML = "";
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6">No hay búsquedas guardadas</td></tr>`;
+        return;
+      }
+      data.forEach(b => {
+        const fecha = new Date(b.fecha).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" });
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${b.ciudad}</td><td>${b.temperatura} °C</td><td>${b.descripcion}</td><td>${b.humedad}%</td><td>${b.velocidad_viento} m/s</td><td>${fecha}</td>`;
+        tbody.appendChild(tr);
+      });
+    });
 }
 
 function mostrarHistorial() {
@@ -427,4 +452,4 @@ function buscarCiudadPerfil() {
 }
 
 /* ---------------- Inicializar ---------------- */
-window.onload = actualizarEstadoLogin; // 🔹 solo al renderizar la página
+window.onload = actualizarEstadoLogin;
