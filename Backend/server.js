@@ -4,10 +4,28 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import { pool } from "./db.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = 3000;
 const JWT_SECRET = "tu_clave_secreta";
+
+// Configurar paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
+
+// Servir archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, "../Frontend")));
+
+// Endpoint principal que devuelve index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../Frontend/index.html"));
+});
 
 app.use(cors());
 app.use(bodyParser.json());
