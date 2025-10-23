@@ -20,11 +20,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Servir archivos estáticos del frontend
-app.use(express.static(path.join(__dirname, "../Frontend")));
+app.use(express.static(path.join(__dirname, "../Fronted")));
 
 // Endpoint principal que devuelve index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../Frontend/index.html"));
+  res.sendFile(path.join(__dirname, "../Fronted/index.html"));
 });
 
 app.use(cors());
