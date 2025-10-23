@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- ✅ Ajuste completo para móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Clima App</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Archivos locales -->
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+
+  <!-- ✅ Previene scroll lateral en móviles -->
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    /* ✅ Hace que todas las pantallas tengan desplazamiento interno si el contenido es largo */
+    .pantalla {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* ✅ Mejora botones para pantallas táctiles */
+    button {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de login -->
+  <div id="pantallaInicio" class="pantalla">
+    <h2>Bienvenido a Clima App</h2>
+    <input type="text" id="username" placeholder="Usuario">
+    <input type="password" id="password" placeholder="Contraseña">
+    <div class="botones-login">
+      <button onclick="login()">Login</button>
+      <button onclick="register()">Registrar</button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="pantalla oculto">
+    <header>
+      <span id="usernameDash"></span>
+      <button onclick="logout()">Cerrar sesión</button>
+    </header>
+    <div class="menuPrincipal">
+      <button onclick="mostrarMapa()">Ver Mapa</button>
+      <button onclick="mostrarPerfil()">Perfil</button>
+      <button onclick="mostrarHistorial()">Historial</button>
+    </div>
+  </div>
+
+  <!-- Mapa -->
+  <div id="mapContainer" class="pantalla oculto">
+    <button id="btnVolverMapa" onclick="volverDashboard()">← Volver</button>
+    <button id="btnGuardarBusqueda" onclick="guardarBusqueda()">💾 Guardar búsqueda</button>
+
+    <!-- Barra de búsqueda -->
+    <div id="searchContainer">
+      <div class="search-input-wrapper">
+        <input type="text" id="ciudadInput" placeholder="Busca una ciudad" oninput="mostrarSugerenciasAPI()">
+        <button onclick="buscarCiudad()">Buscar</button>
+      </div>
+      <div id="sugerenciasList"></div>
+    </div>
+
+    <!-- Mapa principal -->
+    <div id="map"></div>
+  </div>
+
+  <!-- ------------------ PERFIL ------------------ -->
+  <div id="perfilPanel" class="pantalla oculto">
+    <h2>Perfil de Usuario</h2>
+
+    <label for="fechaNacimiento">Fecha de nacimiento:</label>
+    <input type="date" id="fechaNacimiento" disabled><br><br>
+
+    <label for="bioPerfil">Biografía:</label><br>
+    <textarea id="bioPerfil" rows="4" cols="50" disabled></textarea><br><br>
+
+    <label for="paisPerfil">País:</label>
+    <input type="text" id="paisPerfil" readonly><br><br>
+
+    <label for="estadoPerfil">Estado:</label>
+    <input type="text" id="estadoPerfil" readonly><br><br>
+
+    <label for="ciudadPerfil">Ciudad:</label>
+    <input type="text" id="ciudadPerfil" readonly><br><br>
+
+    <!-- Barra de búsqueda de ciudad para el perfil -->
+    <div id="searchContainerPerfil">
+      <div class="search-input-wrapper">
+        <input type="text" id="ciudadInputPerfil" placeholder="Busca tu ciudad" oninput="mostrarSugerenciasPerfil()">
+        <button onclick="buscarCiudadPerfil()">Buscar</button>
+      </div>
+      <div id="sugerenciasListPerfil"></div>
+    </div>
+
+    <!-- Mapa de selección de ubicación -->
+    <div id="mapPerfil" style="height: 400px; width: 100%; margin-bottom: 10px; display:none;"></div>
+
+    <!-- Botones -->
+    <button id="btnEditarPerfil" onclick="habilitarEdicion()">Modificar datos</button>
+    <button id="btnGuardarPerfil" onclick="guardarPerfil()">Guardar Perfil</button>
+    <button onclick="volverDashboard()">Volver al Dashboard</button>
+  </div>
+
+  <!-- ------------------ HISTORIAL ------------------ -->
+  <div id="historialBusquedas" class="pantalla oculto">
+    <button onclick="volverDashboard()">← Volver</button>
+    <h4>Historial de búsquedas</h4>
+    <table id="busquedasTable">
+      <thead>
+        <tr>
+          <th>Ciudad</th>
+          <th>Temperatura (°C)</th>
+          <th>Descripción</th>
+          <th>Humedad (%)</th>
+          <th>Viento (m/s)</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- ✅ Sugerencia: desactivar scroll del mapa con rueda para móviles -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof L !== 'undefined') {
+        const mapElements = [window.map, window.mapPerfil].filter(Boolean);
+        mapElements.forEach(m => {
+          m?.scrollWheelZoom?.disable();
+          m?.touchZoom?.enable();
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

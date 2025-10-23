@@ -1,0 +1,426 @@
+/* ---------------- Reset básico ---------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #E3F2FD;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ---------------- Pantallas ---------------- */
+.pantalla {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* ---------------- Login / Bienvenida ---------------- */
+#pantallaInicio {
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4FC3F7, #0288D1);
+  color: white;
+  height: 100vh;
+  text-align: center;
+  padding: 0 20px;
+}
+
+#pantallaInicio h2 {
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+  color: #FFF9C4;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+#pantallaInicio input {
+  padding: 12px;
+  margin: 10px 0;
+  width: 280px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+#pantallaInicio input:focus {
+  box-shadow: 0 0 10px #FFF9C4;
+}
+
+.botones-login {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.botones-login button {
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  background: linear-gradient(135deg, #81D4FA, #0288D1);
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.botones-login button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+#pantallaInicio h2,
+#pantallaInicio input,
+.botones-login button {
+  opacity: 0;
+  animation: fadeInUp 0.8s forwards;
+}
+
+#pantallaInicio h2 { animation-delay: 0.2s; }
+#pantallaInicio input { animation-delay: 0.5s; }
+.botones-login button { animation-delay: 0.8s; }
+
+/* ---------------- Dashboard ---------------- */
+#dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #BBDEFB, #90CAF9);
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
+}
+
+header {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+header span {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #01579B;
+}
+
+header button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #FF7043;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+header button:hover {
+  background-color: #E64A19;
+}
+
+/* ---------------- Panel de botones ---------------- */
+.menuPrincipal {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.menuPrincipal button {
+  position: relative;
+  padding: 20px 30px 20px 60px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white;
+  background: linear-gradient(135deg, #29B6F6, #0288D1);
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.menuPrincipal button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* Iconos */
+.menuPrincipal button::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 6px;
+}
+
+.menuPrincipal button:nth-child(1)::before { background-image: url('https://img.icons8.com/ios-filled/50/ffffff/map-marker.png'); }
+.menuPrincipal button:nth-child(2)::before { background-image: url('https://img.icons8.com/ios-filled/50/ffffff/user.png'); }
+.menuPrincipal button:nth-child(3)::before { background-image: url('https://img.icons8.com/ios-filled/50/ffffff/time-machine.png'); }
+
+/* ---------------- Mapa ---------------- */
+#mapContainer {
+  width: 100%;
+  height: calc(100vh - 150px);
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+#btnVolverMapa,
+#btnGuardarBusqueda {
+  position: absolute;
+  top: 12px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+  transition: 0.2s;
+}
+
+#btnVolverMapa { left: 12px; background-color: #FF7043; }
+#btnVolverMapa:hover { background-color: #E64A19; }
+
+#btnGuardarBusqueda { left: 160px; background-color: #43A047; }
+#btnGuardarBusqueda:hover { background-color: #2E7D32; }
+
+/* ---------------- Barra de búsqueda mapa ---------------- */
+#searchContainer {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+#searchContainer .search-input-wrapper {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+#searchContainer input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#searchContainer button {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1E88E5;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#searchContainer button:hover {
+  background-color: #1565C0;
+}
+
+/* Lista de sugerencias */
+#sugerenciasList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1001;
+  margin-top: 4px;
+}
+
+#sugerenciasList div {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+#sugerenciasList div:hover {
+  background-color: #f0f0f0;
+}
+
+/* ---------------- Perfil ---------------- */
+#searchContainerPerfil {
+  position: relative;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  z-index: 1000;
+}
+
+#searchContainerPerfil input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#searchContainerPerfil button {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1E88E5;
+  color: white;
+  cursor: pointer;
+}
+
+#sugerenciasListPerfil {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 4px;
+  width: 100%;
+  z-index: 1001;
+}
+
+#sugerenciasListPerfil div {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+#sugerenciasListPerfil div:hover {
+  background-color: #f0f0f0;
+}
+
+/* ---------------- Responsivo ---------------- */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .menuPrincipal {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .menuPrincipal button {
+    width: 90%;
+    padding: 15px;
+    font-size: 1rem;
+  }
+
+  #searchContainer,
+  #searchContainerPerfil {
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #sugerenciasList, #sugerenciasListPerfil {
+    max-height: 140px;
+  }
+
+  #mapContainer {
+    height: calc(100vh - 200px);
+  }
+
+  #perfilPanel input, #perfilPanel textarea {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  #pantallaInicio input {
+    width: 90%;
+  }
+
+  .botones-login {
+    flex-direction: column;
+  }
+
+  .botones-login button {
+    width: 90%;
+  }
+
+  header span {
+    font-size: 1.1rem;
+  }
+
+  #searchContainer,
+  #searchContainerPerfil {
+    width: 95%;
+  }
+}
+
+/* ---------------- Notificaciones ---------------- */
+.notif {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  z-index: 2000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  opacity: 0.95;
+}
+
+.notif.success { background-color: #43A047; }
+.notif.error { background-color: #E53935; }
+.notif.info { background-color: #0288D1; }
