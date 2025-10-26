@@ -296,48 +296,155 @@ header button:hover {
   background-color: #f0f0f0;
 }
 
-/* ---------------- Perfil ---------------- */
-#searchContainerPerfil {
-  position: relative;
-  margin: 10px 0;
+/* ---------------- PERFIL MUY COMPACTO ---------------- */
+#perfilPanel {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  z-index: 1000;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px; /* aún más compacto */
+  padding: 20px 10px;
+  min-height: 100vh;
+}
+
+#perfilPanel h2 {
+  text-align: center;
+  color: #01579B;
+  font-size: 1.6rem;
+  margin-bottom: 10px; /* menos espacio */
+}
+
+#perfilPanel label {
+  font-weight: bold;
+  color: #1565C0;
+  margin-top: 3px;
+  margin-bottom: 2px;
+  text-align: center;
+  display: block;
+}
+
+#perfilPanel input,
+#perfilPanel textarea,
+#perfilPanel input[type="date"] {
+  width: 280px;
+  max-width: 90%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.3s;
+  text-align: center;
+  margin-bottom: 3px; /* reducir espacio entre campos */
+}
+
+#perfilPanel input:focus,
+#perfilPanel textarea:focus,
+#perfilPanel input[type="date"]:focus {
+  border-color: #42A5F5;
+  box-shadow: 0 0 6px rgba(66,165,245,0.3);
+}
+
+/* Botones del perfil */
+#perfilPanel button {
+  width: 240px;
+  max-width: 90%;
+  padding: 10px 18px;
+  margin: 3px 0; /* menos espacio entre botones */
+  border-radius: 22px;
+  border: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+  text-align: center;
+}
+
+/* Colores y hover */
+#btnEditarPerfil {
+  background: linear-gradient(135deg, #42A5F5, #1E88E5);
+}
+#btnEditarPerfil:hover {
+  background: linear-gradient(135deg, #64B5F6, #2196F3);
+  transform: translateY(-1px);
+}
+
+#btnGuardarPerfil {
+  background: linear-gradient(135deg, #66BB6A, #43A047);
+}
+#btnGuardarPerfil:hover {
+  background: linear-gradient(135deg, #81C784, #4CAF50);
+  transform: translateY(-1px);
+}
+
+#perfilPanel button:nth-child(999) { /* Botón volver al dashboard */
+  background: linear-gradient(135deg, #FF7043, #E64A19);
+}
+#perfilPanel button:nth-child(999):hover {
+  background: linear-gradient(135deg, #FF8A65, #F4511E);
+  transform: translateY(-1px);
+}
+
+/* Buscador perfil */
+#searchContainerPerfil {
+  width: 280px;
+  max-width: 90%;
+  margin: 3px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#searchContainerPerfil .search-input-wrapper {
+  display: flex;
+  width: 100%;
+  gap: 4px; /* más compacto */
 }
 
 #searchContainerPerfil input {
   flex: 1;
   padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  text-align: center;
+  margin-bottom: 2px;
 }
 
 #searchContainerPerfil button {
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: none;
+  padding: 8px 10px;
+  border-radius: 12px;
   background-color: #1E88E5;
+  font-weight: bold;
   color: white;
+  border: none;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+#searchContainerPerfil button:hover {
+  background-color: #1565C0;
+}
+
+/* Lista de sugerencias perfil */
 #sugerenciasListPerfil {
-  position: absolute;
+  width: 100%;
   top: 100%;
   left: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  max-height: 180px;
+  max-height: 160px;
   overflow-y: auto;
-  margin-top: 4px;
-  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  margin-top: 2px;
+  position: absolute;
   z-index: 1001;
 }
 
 #sugerenciasListPerfil div {
-  padding: 6px 10px;
+  padding: 6px 8px;
   cursor: pointer;
 }
 
@@ -379,8 +486,14 @@ header button:hover {
     height: calc(100vh - 200px);
   }
 
-  #perfilPanel input, #perfilPanel textarea {
-    width: 100%;
+  #perfilPanel input,
+  #perfilPanel textarea,
+  #perfilPanel input[type="date"] {
+    width: 90%;
+  }
+
+  #perfilPanel button {
+    width: 90%;
   }
 }
 
@@ -403,6 +516,16 @@ header button:hover {
 
   #searchContainer,
   #searchContainerPerfil {
+    width: 95%;
+  }
+
+  #perfilPanel input,
+  #perfilPanel textarea,
+  #perfilPanel input[type="date"] {
+    width: 95%;
+  }
+
+  #perfilPanel button {
     width: 95%;
   }
 }
