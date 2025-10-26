@@ -14,6 +14,9 @@ let ultimaBusqueda = null;
 
 let perfilMap = null;
 let perfilMarker = null;
+let esInvitado = false;
+let usuarioActual = null;
+
 
 /* ---------------- Mostrar pantalla ---------------- */
 function mostrarPantalla(id) {
@@ -27,15 +30,78 @@ function estaLogeado() {
 }
 
 function actualizarEstadoLogin() {
-  if (estaLogeado()) {
-    mostrarPantalla("dashboard");
-    document.getElementById("usernameDash").innerText = "Usuario: " + localStorage.getItem("username");
-    cargarBusquedas();
-    cargarPerfil();
-  } else {
-    mostrarPantalla("pantallaInicio");
-  }
+    if (estaLogeado()) {
+        esInvitado = false; // reset invitado si hay login
+        mostrarPantalla("dashboard");
+        document.getElementById("usernameDash").innerText = "Usuario: " + localStorage.getItem("username");
+
+        // habilitar todas las opciones
+        document.querySelectorAll(".menuPrincipal button").forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = 1;
+            btn.style.cursor = "pointer";
+        });
+
+        cargarBusquedas();
+        cargarPerfil();
+
+    } else if (esInvitado) {
+        mostrarPantalla("dashboard");
+        document.getElementById("usernameDash").innerText = "Invitado";
+
+        // bloquear opciones que no sean ver mapa
+        document.querySelectorAll(".menuPrincipal button").forEach(btn => {
+            if (btn.textContent.includes("Perfil") || btn.textContent.includes("Historial")) {
+                btn.disabled = true;
+                btn.style.opacity = 0.5;
+                btn.style.cursor = "not-allowed";
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = 1;
+                btn.style.cursor = "pointer";
+            }
+        });
+
+    } else {
+        mostrarPantalla("pantallaInicio");
+    }
+
+    actualizarBotonSesion(); // mantener botón correcto
 }
+
+
+function entrarComoInvitado() {
+    usuarioActual = "invitado";
+    esInvitado = true;
+    actualizarEstadoLogin(); // esto muestra dashboard y bloquea botones
+}
+
+
+function loginExitoso(nombreUsuario) {
+    usuarioActual = nombreUsuario;
+    esInvitado = false;
+    mostrarPantalla("dashboard");
+    document.getElementById("usernameDash").textContent = nombreUsuario;
+    actualizarBotonSesion();
+}
+
+function actualizarBotonSesion() {
+    const boton = document.getElementById("botonSesion");
+    if (usuarioActual === "invitado") {
+        boton.textContent = "Iniciar sesión";
+        boton.onclick = volverPantallaInicio; // lleva al login/inicio
+    } else {
+        boton.textContent = "Cerrar sesión";
+        boton.onclick = logout; // tu función de cerrar sesión
+    }
+}
+function volverPantallaInicio() {
+    usuarioActual = null;
+    esInvitado = false;
+    mostrarPantalla("pantallaInicio");
+}
+
+
 
 function login() {
   const username = document.getElementById("username").value;
@@ -80,10 +146,11 @@ function register() {
 }
 
 function logout() {
-  localStorage.removeItem("userId");
-  localStorage.removeItem("username");
-  mostrarNotificacion("⚠️ Sesión cerrada", "info");
-  actualizarEstadoLogin();
+    usuarioActual = null;
+    esInvitado = false;
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    mostrarPantalla("pantallaInicio");
 }
 
 /* ---------------- Notificaciones ---------------- */

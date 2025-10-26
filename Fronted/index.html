@@ -35,6 +35,7 @@
   </style>
 </head>
 <body>
+  
 
   <!-- Pantalla de login -->
   <div id="pantallaInicio" class="pantalla">
@@ -44,21 +45,24 @@
     <div class="botones-login">
       <button onclick="login()">Login</button>
       <button onclick="register()">Registrar</button>
+      <button onclick="entrarComoInvitado()">Invitado</button>
     </div>
   </div>
 
-  <!-- Dashboard -->
-  <div id="dashboard" class="pantalla oculto">
-    <header>
-      <span id="usernameDash"></span>
-      <button onclick="logout()">Cerrar sesión</button>
-    </header>
-    <div class="menuPrincipal">
-      <button onclick="mostrarMapa()">Ver Mapa</button>
-      <button onclick="mostrarPerfil()">Perfil</button>
-      <button onclick="mostrarHistorial()">Historial</button>
-    </div>
+<!-- Dashboard -->
+<div id="dashboard" class="pantalla oculto">
+  <header>
+    <span id="usernameDash"></span>
+    <!-- Cambié onclick directo por id para control dinámico -->
+    <button id="botonSesion">Cerrar sesión</button>
+  </header>
+  <div class="menuPrincipal">
+    <button onclick="mostrarMapa()">Ver Mapa</button>
+    <button onclick="mostrarPerfil()">Perfil</button>
+    <button onclick="mostrarHistorial()">Historial</button>
   </div>
+</div>
+
 
   <!-- Mapa -->
   <div id="mapContainer" class="pantalla oculto">
